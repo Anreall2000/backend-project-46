@@ -34,7 +34,7 @@ test('flatFiles', () => {
   - proxy: 123.234.53.22
   - timeout: 50
   + timeout: 20
-  + verbose: truedf
+  + verbose: true
 }`;
   const dirname = path.dirname(fileURLToPath(import.meta.url));
   const p1 = path.join(dirname, '..', '__fixtures__', 'file1.json');
