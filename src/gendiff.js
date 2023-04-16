@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
+import yaml from 'js-yaml';
 
 const firstObjectOnlyKeys = (o1, o2) => {
   const keys = Object.keys(o1).filter((el) => !Object.keys(o2).includes(el));
@@ -31,15 +32,33 @@ const genDiff = (o1, o2) => {
   return `{\n  ${diffOutputArr.join('\n  ')}\n}`;
 };
 
+const getFileType = (fileName) => {
+  if (fileName.endsWith('.yml') || fileName.endsWith('.yaml')) {
+    return 'yaml';
+  }
+  if (fileName.endsWith('.json')) {
+    return 'json';
+  }
+  return '';
+};
+
+const retriveObjectFromFile = (filepath) => {
+  const absolutePath = path.resolve(process.cwd(), filepath);
+  const type = getFileType(filepath);
+  const content = fs.readFileSync(absolutePath, 'utf8');
+  switch (type) {
+    case 'json':
+      return JSON.parse(content);
+    case 'yaml':
+      return yaml.load(content);
+    default:
+      throw new Error('Unknown file type');
+  }
+};
+
 const genDiffFiles = (filepath1, filepath2) => {
-  const p1 = path.resolve(process.cwd(), filepath1);
-  const p2 = path.resolve(process.cwd(), filepath2);
-
-  const f1 = fs.readFileSync(p1, 'utf8');
-  const f2 = fs.readFileSync(p2, 'utf8');
-
-  const obj1 = JSON.parse(f1);
-  const obj2 = JSON.parse(f2);
+  const obj1 = retriveObjectFromFile(filepath1);
+  const obj2 = retriveObjectFromFile(filepath2);
   return genDiff(obj1, obj2);
 };
 

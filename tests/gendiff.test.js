@@ -37,8 +37,13 @@ test('flatFiles', () => {
   + verbose: true
 }`;
   const dirname = path.dirname(fileURLToPath(import.meta.url));
-  const p1 = path.join(dirname, '..', '__fixtures__', 'file1.json');
-  const p2 = path.join(dirname, '..', '__fixtures__', 'file2.json');
+  const jsonFile1 = path.join(dirname, '..', '__fixtures__', 'file1.json');
+  const jsonFile2 = path.join(dirname, '..', '__fixtures__', 'file2.json');
 
-  expect(genDiffFiles(p1, p2)).toBe(answer);
+  expect(genDiffFiles(jsonFile1, jsonFile2)).toBe(answer);
+
+  const ymlFile1 = path.join(dirname, '..', '__fixtures__', 'file1.yml');
+  const ymlFile2 = path.join(dirname, '..', '__fixtures__', 'file2.yml');
+
+  expect(genDiffFiles(ymlFile1, ymlFile2)).toBe(answer);
 });
