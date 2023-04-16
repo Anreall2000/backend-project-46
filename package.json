@@ -37,6 +37,6 @@
     "gendiff": "bin/gendiff.js"
   },
   "simple-git-hooks": {
-    "pre-push": "make lint && make test"
+    "pre-commit": "make lint && make test"
   }
 }
