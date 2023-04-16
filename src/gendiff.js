@@ -25,7 +25,6 @@ const genDiff = (o1, o2) => {
 
   const diffOutputArr = allKeys.reduce((diff, key) => {
     if (obj1OnlyKeys.has(key)) {
-      // return [...diff, `- ${key}: ${o1[key]}`];
       return [...diff, {
         type: 'removed',
         key,
@@ -33,7 +32,6 @@ const genDiff = (o1, o2) => {
       }];
     }
     if (obj2OnlyKeys.has(key)) {
-      // return [...diff, `+ ${key}: ${o2[key]}`];
       return [...diff, {
         type: 'added',
         key,
@@ -41,7 +39,6 @@ const genDiff = (o1, o2) => {
       }];
     }
     if (sameValueKeys.has(key)) {
-      // return [...diff, `  ${key}: ${o1[key]}`];
       return [...diff, {
         type: 'unchanged',
         key,
@@ -49,14 +46,12 @@ const genDiff = (o1, o2) => {
       }];
     }
     if (isObject(o1[key]) && isObject(o2[key])) {
-      // return [...diff, `  ${key}: ${genDiff(o1[key], o2[key])}`];
       return [...diff, {
         type: 'changedLater',
         key,
         value: genDiff(o1[key], o2[key]),
       }];
     }
-    // return [...diff, `- ${key}: ${o1[key]}`, `+ ${key}: ${o2[key]}`]
     return [...diff, {
       type: 'updated',
       key,
