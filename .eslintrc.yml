@@ -1,5 +1,13 @@
+plugins:
+  - jest
+
 extends:
   - 'airbnb-base'
+  - 'plugin:jest/recommended'
+
+# for import.meta.url
+parserOptions:
+  ecmaVersion: latest
 
 rules:
   no-console: 'off'
