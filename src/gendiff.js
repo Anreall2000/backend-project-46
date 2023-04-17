@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import retriveObjectFromFile from './parsers.js';
 
 const firstObjectOnlyKeys = (o1, o2) => {
   const keys = Object.keys(o1).filter((el) => !Object.keys(o2).includes(el));
@@ -62,10 +61,4 @@ const genDiff = (o1, o2) => {
   return diffOutputArr;
 };
 
-const genDiffFiles = (filepath1, filepath2, method) => {
-  const obj1 = retriveObjectFromFile(filepath1);
-  const obj2 = retriveObjectFromFile(filepath2);
-  return method(obj1, obj2);
-};
-
-export { genDiffFiles, genDiff };
+export default genDiff;

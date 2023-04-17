@@ -1,32 +1,6 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { genDiffFiles } from '../src/gendiff.js';
-import { stylish, plain, json } from '../src/formatters';
-
-test('flatList', () => {
-  const obj1 = {
-    host: 'hexlet.io',
-    timeout: 50,
-    proxy: '123.234.53.22',
-    follow: false,
-  };
-  const obj2 = {
-    timeout: 20,
-    verbose: true,
-    host: 'hexlet.io',
-  };
-
-  const answer = `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`;
-
-  expect(stylish(obj1, obj2)).toBe(answer);
-});
+import genDiffFiles from '../src/formatters';
 
 test('flatFiles', () => {
   const answer = `{
@@ -41,12 +15,12 @@ test('flatFiles', () => {
   const jsonFile1 = path.join(dirname, '..', '__fixtures__', 'file1.json');
   const jsonFile2 = path.join(dirname, '..', '__fixtures__', 'file2.json');
 
-  expect(genDiffFiles(jsonFile1, jsonFile2, stylish)).toBe(answer);
+  expect(genDiffFiles(jsonFile1, jsonFile2, 'stylish')).toBe(answer);
 
   const ymlFile1 = path.join(dirname, '..', '__fixtures__', 'file1.yml');
   const ymlFile2 = path.join(dirname, '..', '__fixtures__', 'file2.yml');
 
-  expect(genDiffFiles(ymlFile1, ymlFile2, stylish)).toBe(answer);
+  expect(genDiffFiles(ymlFile1, ymlFile2, 'stylish')).toBe(answer);
 });
 
 test('deepFiles', () => {
@@ -98,9 +72,7 @@ test('deepFiles', () => {
   const jsonFile1 = path.join(dirname, '..', '__fixtures__', 'file3.json');
   const jsonFile2 = path.join(dirname, '..', '__fixtures__', 'file4.json');
 
-  console.log(genDiffFiles(jsonFile1, jsonFile2, stylish));
-
-  expect(genDiffFiles(jsonFile1, jsonFile2, stylish)).toBe(answer);
+  expect(genDiffFiles(jsonFile1, jsonFile2, 'stylish')).toBe(answer);
 });
 
 test('plainDeepFiles', () => {
@@ -120,7 +92,7 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
-  expect(genDiffFiles(jsonFile1, jsonFile2, plain)).toBe(answer);
+  expect(genDiffFiles(jsonFile1, jsonFile2, 'plain')).toBe(answer);
 });
 
 test('jsonDeepFiles', () => {
@@ -154,5 +126,5 @@ test('jsonDeepFiles', () => {
     }],
   }, { key: 'group2', type: 'removed', value: { abc: 12345, deep: { id: 45 } } }, { key: 'group3', type: 'added', value: { deep: { id: { number: 45 } }, fee: 100500 } }];
 
-  expect(genDiffFiles(jsonFile1, jsonFile2, json)).toEqual(answer);
+  expect(genDiffFiles(jsonFile1, jsonFile2, 'json')).toEqual(answer);
 });
