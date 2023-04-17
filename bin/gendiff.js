@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import { genDiffFiles, stylish } from '../src/gendiff.js';
+import { genDiffFiles } from '../src/gendiff.js';
+import { stylish, plain } from '../src/formatters';
 
 program.name('gendiff')
   .description('Compares two configuration files and shows a difference.')
@@ -12,8 +13,11 @@ program.name('gendiff')
       case 'stylish':
         console.log(genDiffFiles(filepath1, filepath2, stylish));
         break;
+      case 'plain':
+        console.log(genDiffFiles(filepath1, filepath2, plain));
+        break;
       default:
-        throw new Error('unknown format');
+        throw new Error(`unknown format: ${options.format}`);
     }
   });
 

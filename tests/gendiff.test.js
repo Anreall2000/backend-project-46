@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { genDiffFiles, stylish } from '../src/gendiff.js';
+import { genDiffFiles } from '../src/gendiff.js';
+import { stylish, plain } from '../src/formatters';
 
 test('flatList', () => {
   const obj1 = {
@@ -100,4 +101,24 @@ test('deepFiles', () => {
   console.log(genDiffFiles(jsonFile1, jsonFile2, stylish));
 
   expect(genDiffFiles(jsonFile1, jsonFile2, stylish)).toBe(answer);
+});
+
+test('plainDeepFiles', () => {
+  const dirname = path.dirname(fileURLToPath(import.meta.url));
+  const jsonFile1 = path.join(dirname, '..', '__fixtures__', 'file3.json');
+  const jsonFile2 = path.join(dirname, '..', '__fixtures__', 'file4.json');
+
+  const answer = `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`;
+
+  expect(genDiffFiles(jsonFile1, jsonFile2, plain)).toBe(answer);
 });
